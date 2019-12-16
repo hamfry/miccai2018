@@ -123,7 +123,7 @@ def validate(loader, net):
     [acc_meter[i].reset() for i in range(4)]
     time_meter.reset()
 
-    # switch to train mode
+    # switch to evaluation mode
     net.eval()
 
     t = time.time()
@@ -135,8 +135,8 @@ def validate(loader, net):
     for input, label in loader:
 
         sub_time = time.time()
-        input_var = [Variable(x.cuda(async=True), requires_grad=False) for x in input]
-        label_var = Variable(label.cuda(async=True), requires_grad=False)
+        input_var = [Variable(x.cuda(non_blocking=True), requires_grad=False) for x in input]   # changed
+        label_var = Variable(label.cuda(non_blocking=True), requires_grad=False)                # changed
 
         # run the model
         predict = net(input_var)
